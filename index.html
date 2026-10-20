@@ -14,130 +14,116 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 h-screen overflow-hidden p-2 md:p-3 font-sans flex flex-col justify-between">
+<body class="bg-slate-100 text-slate-800 min-h-screen p-2 md:p-4 font-sans">
 
-    <div class="max-w-7xl mx-auto w-full flex flex-col h-full justify-between">
+    <div class="max-w-7xl mx-auto w-full pb-10">
         
-        <!-- Header Bar (Ultra Compact) -->
-        <header class="glass-card rounded-lg px-3 py-1.5 shadow-sm flex items-center justify-between shrink-0 mb-1.5">
-            <h1 class="text-base md:text-lg font-bold text-indigo-700 flex items-center gap-2">
+        <!-- Header Bar -->
+        <header class="glass-card rounded-xl p-3 shadow-sm mb-3">
+            <h1 class="text-base md:text-xl font-bold text-indigo-700 flex items-center gap-2">
                 <i class="fa-solid fa-calculator"></i> 香港薪俸稅互動練習
             </h1>
-            <p class="text-[11px] text-slate-500 hidden sm:block">💡 輸入框支援直接計算，例如輸入 <code>57000*13=</code> 或按 Enter 自動算數並核對！</p>
+            <p class="text-xs text-slate-500 mt-0.5">💡 輸入框支援直接計算，例如輸入 <code>57000*13=</code> 或按 Enter 自動算數並核對！</p>
         </header>
 
         <!-- Main Layout: 2 Columns Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-2.5 items-stretch overflow-hidden flex-1">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
             
             <!-- Left Column: Question & Answers (7 cols) -->
-            <main class="lg:col-span-7 glass-card rounded-xl p-3 shadow-md flex flex-col justify-between overflow-y-auto">
+            <main class="lg:col-span-7 glass-card rounded-xl p-3 md:p-4 shadow-md space-y-3">
                 
-                <div>
-                    <!-- Question Number Badge & Scenario -->
-                    <div class="flex items-center justify-between pb-1 mb-1 border-b border-slate-100">
-                        <span id="question-number" class="font-bold text-indigo-900 text-xs">題目 #1</span>
+                <!-- Question Number Badge & Scenario -->
+                <div class="flex items-center justify-between pb-1 border-b border-slate-100">
+                    <span id="question-number" class="font-bold text-indigo-900 text-xs md:text-sm">題目 #1</span>
+                </div>
+
+                <div class="bg-indigo-50/80 border border-indigo-100 rounded-lg p-2.5 text-xs md:text-sm leading-relaxed text-slate-800">
+                    <p id="question-text" class="font-medium">載入題目中...</p>
+                </div>
+
+                <!-- Answer Fields (a) - (f) -->
+                <div class="space-y-2">
+                    
+                    <!-- Sub-question (a) -->
+                    <div class="bg-white border rounded-md p-2 shadow-sm">
+                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(a) 全年總收入</label>
+                        <div class="relative flex items-center gap-1.5">
+                            <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
+                            <input type="text" id="input-a" data-key="a" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：57000*13 (按 Enter 提交)">
+                            <button onclick="submitSingle('a')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded shadow transition whitespace-nowrap">提交</button>
+                            <span id="mark-a" class="text-base font-bold min-w-[24px] text-center"></span>
+                        </div>
+                        <div id="feedback-a" class="hidden mt-1.5 p-2 bg-slate-900 text-emerald-400 rounded text-xs font-mono border border-slate-700"></div>
                     </div>
 
-                    <div class="bg-indigo-50/80 border border-indigo-100 rounded-lg p-2.5 text-xs leading-relaxed text-slate-800 mb-2">
-                        <p id="question-text" class="font-medium">載入題目中...</p>
+                    <!-- Sub-question (b) -->
+                    <div class="bg-white border rounded-md p-2 shadow-sm">
+                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(b) 免稅額總和 (表 7.1)</label>
+                        <div class="relative flex items-center gap-1.5">
+                            <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
+                            <input type="text" id="input-b" data-key="b" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：145000+280000+110000">
+                            <button onclick="submitSingle('b')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded shadow transition whitespace-nowrap">提交</button>
+                            <span id="mark-b" class="text-base font-bold min-w-[24px] text-center"></span>
+                        </div>
+                        <div id="feedback-b" class="hidden mt-1.5 p-2 bg-slate-900 text-emerald-400 rounded text-xs font-mono border border-slate-700"></div>
                     </div>
 
-                    <!-- Answer Fields (a) - (f) - Ultra compact spacing -->
-                    <div class="space-y-1.5">
-                        
-                        <!-- Sub-question (a) -->
-                        <div class="bg-white border rounded-md p-1.5 shadow-sm">
-                            <div class="flex items-center justify-between">
-                                <label class="text-[11px] font-bold text-indigo-600 uppercase">(a) 全年總收入</label>
-                            </div>
-                            <div class="relative flex items-center gap-1.5 mt-0.5">
-                                <span class="absolute left-2 text-slate-400 font-bold text-[11px]">$</span>
-                                <input type="text" id="input-a" data-key="a" class="answer-input w-full pl-5 pr-2 py-1 text-xs border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：57000*13 (按 Enter 提交)">
-                                <button onclick="submitSingle('a')" class="px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] rounded shadow transition whitespace-nowrap">提交</button>
-                                <span id="mark-a" class="text-sm font-bold min-w-[20px] text-center"></span>
-                            </div>
-                            <div id="feedback-a" class="hidden mt-1 p-1.5 bg-slate-900 text-emerald-400 rounded text-[11px] font-mono border border-slate-700"></div>
+                    <!-- Sub-question (c) -->
+                    <div class="bg-white border rounded-md p-2 shadow-sm">
+                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(c) 扣除額總和 (表 7.2，含強積金 MPF)</label>
+                        <div class="relative flex items-center gap-1.5">
+                            <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
+                            <input type="text" id="input-c" data-key="c" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：18000+73000">
+                            <button onclick="submitSingle('c')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded shadow transition whitespace-nowrap">提交</button>
+                            <span id="mark-c" class="text-base font-bold min-w-[24px] text-center"></span>
                         </div>
-
-                        <!-- Sub-question (b) -->
-                        <div class="bg-white border rounded-md p-1.5 shadow-sm">
-                            <div class="flex items-center justify-between">
-                                <label class="text-[11px] font-bold text-indigo-600 uppercase">(b) 免稅額總和 (表 7.1)</label>
-                            </div>
-                            <div class="relative flex items-center gap-1.5 mt-0.5">
-                                <span class="absolute left-2 text-slate-400 font-bold text-[11px]">$</span>
-                                <input type="text" id="input-b" data-key="b" class="answer-input w-full pl-5 pr-2 py-1 text-xs border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：145000+280000+110000+75000">
-                                <button onclick="submitSingle('b')" class="px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] rounded shadow transition whitespace-nowrap">提交</button>
-                                <span id="mark-b" class="text-sm font-bold min-w-[20px] text-center"></span>
-                            </div>
-                            <div id="feedback-b" class="hidden mt-1 p-1.5 bg-slate-900 text-emerald-400 rounded text-[11px] font-mono border border-slate-700"></div>
-                        </div>
-
-                        <!-- Sub-question (c) -->
-                        <div class="bg-white border rounded-md p-1.5 shadow-sm">
-                            <div class="flex items-center justify-between">
-                                <label class="text-[11px] font-bold text-indigo-600 uppercase">(c) 扣除額總和 (表 7.2，含強積金 MPF)</label>
-                            </div>
-                            <div class="relative flex items-center gap-1.5 mt-0.5">
-                                <span class="absolute left-2 text-slate-400 font-bold text-[11px]">$</span>
-                                <input type="text" id="input-c" data-key="c" class="answer-input w-full pl-5 pr-2 py-1 text-xs border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：18000+73000">
-                                <button onclick="submitSingle('c')" class="px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] rounded shadow transition whitespace-nowrap">提交</button>
-                                <span id="mark-c" class="text-sm font-bold min-w-[20px] text-center"></span>
-                            </div>
-                            <div id="feedback-c" class="hidden mt-1 p-1.5 bg-slate-900 text-emerald-400 rounded text-[11px] font-mono border border-slate-700"></div>
-                        </div>
-
-                        <!-- Sub-question (d) -->
-                        <div class="bg-white border rounded-md p-1.5 shadow-sm">
-                            <div class="flex items-center justify-between">
-                                <label class="text-[11px] font-bold text-indigo-600 uppercase">(d) 應課稅入息實額</label>
-                            </div>
-                            <div class="relative flex items-center gap-1.5 mt-0.5">
-                                <span class="absolute left-2 text-slate-400 font-bold text-[11px]">$</span>
-                                <input type="text" id="input-d" data-key="d" class="answer-input w-full pl-5 pr-2 py-1 text-xs border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：收入 - 免稅額 - 扣除額">
-                                <button onclick="submitSingle('d')" class="px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] rounded shadow transition whitespace-nowrap">提交</button>
-                                <span id="mark-d" class="text-sm font-bold min-w-[20px] text-center"></span>
-                            </div>
-                            <div id="feedback-d" class="hidden mt-1 p-1.5 bg-slate-900 text-emerald-400 rounded text-[11px] font-mono border border-slate-700"></div>
-                        </div>
-
-                        <!-- Sub-question (e) -->
-                        <div class="bg-white border rounded-md p-1.5 shadow-sm">
-                            <div class="flex items-center justify-between">
-                                <label class="text-[11px] font-bold text-indigo-600 uppercase">(e) 本年度薪俸稅款 (不連暫繳稅款)</label>
-                            </div>
-                            <div class="relative flex items-center gap-1.5 mt-0.5">
-                                <span class="absolute left-2 text-slate-400 font-bold text-[11px]">$</span>
-                                <input type="text" id="input-e" data-key="e" class="answer-input w-full pl-5 pr-2 py-1 text-xs border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：按累進稅率計算">
-                                <button onclick="submitSingle('e')" class="px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] rounded shadow transition whitespace-nowrap">提交</button>
-                                <span id="mark-e" class="text-sm font-bold min-w-[20px] text-center"></span>
-                            </div>
-                            <div id="feedback-e" class="hidden mt-1 p-1.5 bg-slate-900 text-emerald-400 rounded text-[11px] font-mono border border-slate-700"></div>
-                        </div>
-
-                        <!-- Sub-question (f) -->
-                        <div class="bg-white border rounded-md p-1.5 shadow-sm">
-                            <div class="flex items-center justify-between">
-                                <label class="text-[11px] font-bold text-indigo-600 uppercase">(f) 應繳薪俸稅款 (計及上一年度預繳稅款後)</label>
-                            </div>
-                            <div class="relative flex items-center gap-1.5 mt-0.5">
-                                <span class="absolute left-2 text-slate-400 font-bold text-[11px]">$</span>
-                                <input type="text" id="input-f" data-key="f" class="answer-input w-full pl-5 pr-2 py-1 text-xs border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：稅款*2 - 3000">
-                                <button onclick="submitSingle('f')" class="px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] rounded shadow transition whitespace-nowrap">提交</button>
-                                <span id="mark-f" class="text-sm font-bold min-w-[20px] text-center"></span>
-                            </div>
-                            <div id="feedback-f" class="hidden mt-1 p-1.5 bg-slate-900 text-emerald-400 rounded text-[11px] font-mono border border-slate-700"></div>
-                        </div>
-
+                        <div id="feedback-c" class="hidden mt-1.5 p-2 bg-slate-900 text-emerald-400 rounded text-xs font-mono border border-slate-700"></div>
                     </div>
+
+                    <!-- Sub-question (d) -->
+                    <div class="bg-white border rounded-md p-2 shadow-sm">
+                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(d) 應課稅入息實額</label>
+                        <div class="relative flex items-center gap-1.5">
+                            <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
+                            <input type="text" id="input-d" data-key="d" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：收入 - 免稅額 - 扣除額">
+                            <button onclick="submitSingle('d')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded shadow transition whitespace-nowrap">提交</button>
+                            <span id="mark-d" class="text-base font-bold min-w-[24px] text-center"></span>
+                        </div>
+                        <div id="feedback-d" class="hidden mt-1.5 p-2 bg-slate-900 text-emerald-400 rounded text-xs font-mono border border-slate-700"></div>
+                    </div>
+
+                    <!-- Sub-question (e) -->
+                    <div class="bg-white border rounded-md p-2 shadow-sm">
+                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(e) 本年度薪俸稅款 (不連暫繳稅款)</label>
+                        <div class="relative flex items-center gap-1.5">
+                            <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
+                            <input type="text" id="input-e" data-key="e" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：按累進稅率計算">
+                            <button onclick="submitSingle('e')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded shadow transition whitespace-nowrap">提交</button>
+                            <span id="mark-e" class="text-base font-bold min-w-[24px] text-center"></span>
+                        </div>
+                        <div id="feedback-e" class="hidden mt-1.5 p-2 bg-slate-900 text-emerald-400 rounded text-xs font-mono border border-slate-700"></div>
+                    </div>
+
+                    <!-- Sub-question (f) -->
+                    <div class="bg-white border rounded-md p-2 shadow-sm">
+                        <label class="block text-[11px] md:text-xs font-bold text-indigo-600 uppercase mb-0.5">(f) 應繳薪俸稅款 (計及上一年度預繳稅款後)</label>
+                        <div class="relative flex items-center gap-1.5">
+                            <span class="absolute left-2 text-slate-400 font-bold text-xs">$</span>
+                            <input type="text" id="input-f" data-key="f" class="answer-input w-full pl-5 pr-2 py-1.5 text-xs md:text-sm border rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none text-slate-800 font-semibold" placeholder="例如：稅款*2 - 3000">
+                            <button onclick="submitSingle('f')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded shadow transition whitespace-nowrap">提交</button>
+                            <span id="mark-f" class="text-base font-bold min-w-[24px] text-center"></span>
+                        </div>
+                        <div id="feedback-f" class="hidden mt-1.5 p-2 bg-slate-900 text-emerald-400 rounded text-xs font-mono border border-slate-700"></div>
+                    </div>
+
                 </div>
 
                 <!-- Bottom Question Navigation Controls -->
-                <div class="pt-1.5 mt-1 border-t border-slate-200 flex items-center justify-between gap-2 shrink-0">
-                    <button id="btn-prev-q" class="flex-1 py-1.5 bg-white border border-slate-300 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed rounded text-xs font-semibold transition flex items-center justify-center gap-1">
+                <div class="pt-2 border-t border-slate-200 flex items-center justify-between gap-3">
+                    <button id="btn-prev-q" class="flex-1 py-2 bg-white border border-slate-300 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg text-xs md:text-sm font-semibold transition flex items-center justify-center gap-1">
                         <i class="fa-solid fa-chevron-left"></i> 上一題
                     </button>
-                    <button id="btn-next-q" class="flex-1 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-xs font-semibold transition flex items-center justify-center gap-1">
+                    <button id="btn-next-q" class="flex-1 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs md:text-sm font-semibold transition flex items-center justify-center gap-1">
                         下一題 <i class="fa-solid fa-chevron-right"></i>
                     </button>
                 </div>
@@ -145,49 +131,49 @@
             </main>
 
             <!-- Right Column: Permanent Side Reference Tables (5 cols) -->
-            <aside class="lg:col-span-5 space-y-2 overflow-y-auto">
+            <aside class="lg:col-span-5 space-y-3">
                 
                 <!-- Table 7.1 Allowance -->
-                <div class="glass-card rounded-lg p-2.5 shadow-md border border-slate-200">
-                    <h2 class="text-xs font-bold text-indigo-800 mb-1 flex items-center gap-1 border-b pb-1">
+                <div class="glass-card rounded-xl p-3 shadow-md border border-slate-200">
+                    <h2 class="text-xs md:text-sm font-bold text-indigo-800 mb-2 flex items-center gap-1.5 border-b pb-1.5">
                         <i class="fa-solid fa-table-list text-indigo-600"></i> 表 7.1 免稅額表 (2026/2027)
                     </h2>
-                    <div class="overflow-x-auto rounded border border-slate-200">
-                        <table class="w-full text-[11px] text-left">
+                    <div class="overflow-x-auto rounded-lg border border-slate-200">
+                        <table class="w-full text-xs text-left">
                             <thead class="bg-slate-100 text-slate-700 border-b">
-                                <tr><th class="p-1">免稅項目</th><th class="p-1 text-right">金額 ($)</th></tr>
+                                <tr><th class="p-1.5">免稅項目</th><th class="p-1.5 text-right">金額 ($)</th></tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 text-slate-700">
-                                <tr><td class="p-1">基本免稅額</td><td class="p-1 text-right font-mono font-semibold">145,000</td></tr>
-                                <tr><td class="p-1">已婚人士免稅額</td><td class="p-1 text-right font-mono font-semibold">290,000</td></tr>
-                                <tr><td class="p-1">子女免稅額 (每名)</td><td class="p-1 text-right font-mono font-semibold">140,000</td></tr>
-                                <tr class="bg-indigo-50/50"><td class="p-1 font-medium text-indigo-900">初生子女額外免稅額</td><td class="p-1 text-right font-mono font-semibold text-indigo-900">140,000</td></tr>
-                                <tr><td class="p-1">供養父母/祖父母 (60歲+)</td><td class="p-1 text-right font-mono font-semibold">55,000</td></tr>
-                                <tr class="bg-indigo-50/50"><td class="p-1 font-medium text-indigo-900">供養父母額外免稅額 (同住)</td><td class="p-1 text-right font-mono font-semibold text-indigo-900">55,000</td></tr>
-                                <tr><td class="p-1">供養父母/祖父母 (55-59)</td><td class="p-1 text-right font-mono font-semibold">27,500</td></tr>
-                                <tr><td class="p-1">傷殘受養人免稅額</td><td class="p-1 text-right font-mono font-semibold">75,000</td></tr>
+                                <tr><td class="p-1.5">基本免稅額</td><td class="p-1.5 text-right font-mono font-semibold">145,000</td></tr>
+                                <tr><td class="p-1.5">已婚人士免稅額</td><td class="p-1.5 text-right font-mono font-semibold">290,000</td></tr>
+                                <tr><td class="p-1.5">子女免稅額 (每名)</td><td class="p-1.5 text-right font-mono font-semibold">140,000</td></tr>
+                                <tr class="bg-indigo-50/50"><td class="p-1.5 font-medium text-indigo-900">初生子女額外免稅額</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">140,000</td></tr>
+                                <tr><td class="p-1.5">供養父母/祖父母 (60歲+)</td><td class="p-1.5 text-right font-mono font-semibold">55,000</td></tr>
+                                <tr class="bg-indigo-50/50"><td class="p-1.5 font-medium text-indigo-900">供養父母額外免稅額 (同住)</td><td class="p-1.5 text-right font-mono font-semibold text-indigo-900">55,000</td></tr>
+                                <tr><td class="p-1.5">供養父母/祖父母 (55-59)</td><td class="p-1.5 text-right font-mono font-semibold">27,500</td></tr>
+                                <tr><td class="p-1.5">傷殘受養人免稅額</td><td class="p-1.5 text-right font-mono font-semibold">75,000</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
                 <!-- Table 7.2 Deduction -->
-                <div class="glass-card rounded-lg p-2.5 shadow-md border border-slate-200">
-                    <h2 class="text-xs font-bold text-amber-800 mb-1 flex items-center gap-1 border-b pb-1">
+                <div class="glass-card rounded-xl p-3 shadow-md border border-slate-200">
+                    <h2 class="text-xs md:text-sm font-bold text-amber-800 mb-2 flex items-center gap-1.5 border-b pb-1.5">
                         <i class="fa-solid fa-receipt text-amber-600"></i> 表 7.2 扣除表 (扣稅上限)
                     </h2>
-                    <div class="overflow-x-auto rounded border border-slate-200">
-                        <table class="w-full text-[11px] text-left">
+                    <div class="overflow-x-auto rounded-lg border border-slate-200">
+                        <table class="w-full text-xs text-left">
                             <thead class="bg-slate-100 text-slate-700 border-b">
-                                <tr><th class="p-1">常見扣稅項目</th><th class="p-1 text-right">扣稅上限 ($)</th></tr>
+                                <tr><th class="p-1.5">常見扣稅項目</th><th class="p-1.5 text-right">扣稅上限 ($)</th></tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100 text-slate-700">
                                 <tr class="bg-amber-100/70 font-semibold text-amber-900">
-                                    <td class="p-1">強積金 (MPF) 強制性供款</td><td class="p-1 text-right font-mono">18,000</td>
+                                    <td class="p-1.5">強積金 (MPF) 強制性供款</td><td class="p-1.5 text-right font-mono">18,000</td>
                                 </tr>
-                                <tr class="bg-amber-50"><td class="p-1">個人進修開支</td><td class="p-1 text-right font-mono">100,000</td></tr>
-                                <tr class="bg-amber-50"><td class="p-1">居所貸款利息</td><td class="p-1 text-right font-mono">100,000</td></tr>
-                                <tr class="bg-amber-50"><td class="p-1">長者住宿照顧開支</td><td class="p-1 text-right font-mono">100,000</td></tr>
+                                <tr class="bg-amber-50"><td class="p-1.5">個人進修開支</td><td class="p-1.5 text-right font-mono">100,000</td></tr>
+                                <tr class="bg-amber-50"><td class="p-1.5">居所貸款利息</td><td class="p-1.5 text-right font-mono">100,000</td></tr>
+                                <tr class="bg-amber-50"><td class="p-1.5">長者住宿照顧開支</td><td class="p-1.5 text-right font-mono">100,000</td></tr>
                             </tbody>
                         </table>
                     </div>
